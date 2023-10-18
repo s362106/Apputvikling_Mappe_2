@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Mappe_2</string>
+
+
+    <string name="friendsBtn_text">Friend List</string>
+    <string name="friendsBtn_description">Knapp for venne liste</string>
+
+
+    <string name="newAppointmentBtn_text">Ny Avtale</string>
+    <string name="newAppointmentBtn_description">Ny Avtale knapp</string>
+
+    <string name="preferenceBtn_text">Preferanser</string>
+    <string name="preferenceBtn_description">Knapp for preferanser</string>
+
+
 </resources>
