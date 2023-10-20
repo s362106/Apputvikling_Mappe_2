@@ -22,52 +22,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/contactsListView"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/newContactBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/preferenceBtn">
+        app:layout_constraintTop_toBottomOf="@+id/textView">
 
-    </FrameLayout>
+        <ListView
+            android:id="@+id/contactsListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp">
 
-    <Button
-        android:id="@+id/preferenceBtn"
-        style="@style/Widget.Material3.Button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:contentDescription="@string/preferenceBtn_description"
-        android:text="@string/preferenceBtn_text"
-        android:onClick="preferenceMethod"
-        app:icon="@drawable/round_settings_24"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/friendsBtn"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <Button
-        android:id="@+id/friendsBtn"
-        style="@style/Widget.Material3.Button"
-        android:onClick="contactMethod"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:contentDescription="@string/friendsBtn_description"
-        android:text="@string/friendsBtn_text"
-        app:icon="@drawable/round_person_24"
-        app:layout_constraintEnd_toStartOf="@+id/preferenceBtn"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        </ListView>
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/newContactBtn"
@@ -78,9 +55,11 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
         android:contentDescription="@string/newAppointmentBtn_description"
-        android:text="@string/newAppointmentBtn_text"
+        android:onClick="newContactMethod"
+        android:text="@string/newContactBtn_text"
         app:icon="@drawable/round_add_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:contentDescription="@string/newContactBtn_description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,21 +8,23 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-    private Button preferenceBtn;
+    private Button preferenceBtn, contactBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         preferenceBtn = findViewById(R.id.preferenceBtn);
+        contactBtn = findViewById(R.id.friendsBtn);
+    }
 
-        Intent i = new Intent(this, SettingsActivity.class);
+    public void preferenceMethod(View view) {
+        Intent iS = new Intent(this, SettingsActivity.class);
+        startActivity(iS);
+    }
 
-        preferenceBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(i);
-            }
-        });
+    public void contactMethod(View view) {
+        Intent iC = new Intent(this, ContactsActivity.class);
+        startActivity(iC);
     }
 }
