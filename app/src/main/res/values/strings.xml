@@ -13,4 +13,7 @@
     <string name="preferenceBtn_description">Knapp for preferanser</string>
 
 
+    <string name="newContactBtn_text">Ny Kontakt</string>
+    <string name="newContactBtn_description">Ny kontakt knapp</string>
+
 </resources>
