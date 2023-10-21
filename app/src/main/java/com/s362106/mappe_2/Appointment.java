@@ -1,12 +1,16 @@
 package com.s362106.mappe_2;
 
 import androidx.room.ColumnInfo;
+import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+@Entity
 public class Appointment {
     @PrimaryKey(autoGenerate = true)
     public int appointmentId;
+
+    // Her skal det legges til foreign-key som er "Contact"
 
     @ColumnInfo(name = "date")
     public String date;

@@ -1,10 +1,9 @@
 <resources>
     <string name="app_name">Mappe_2</string>
 
-
+    <!-- MainActivity -->
     <string name="friendsBtn_text">Friend List</string>
     <string name="friendsBtn_description">Knapp for venne liste</string>
-
 
     <string name="newAppointmentBtn_text">Ny Avtale</string>
     <string name="newAppointmentBtn_description">Ny Avtale knapp</string>
@@ -12,8 +11,27 @@
     <string name="preferenceBtn_text">Preferanser</string>
     <string name="preferenceBtn_description">Knapp for preferanser</string>
 
-
+    <!-- ContactsActivity -->
+    <string name="contactsTextView_text">Dine Kontakter</string>
+    <string name="contactsTextView_description">Skjermbilde av kontakter</string>
     <string name="newContactBtn_text">Ny Kontakt</string>
     <string name="newContactBtn_description">Ny kontakt knapp</string>
+
+    <!-- ContactsActivity & AppointmentActivity -->
+    <string name="applyChangesBtn_text">Lagre</string>
+    <string name="applyChangesBtn_description">Lagre endringer i gjenstand</string>
+
+    <string name="deleteItemBtn_text">Slett</string>
+    <string name="deleteItemBtn_description">Slett valgt gjenstand</string>
+
+    <!-- AppointmentActivity -->
+    <string name="appointmentTextView_text">Endre Avtale</string>
+    <string name="appointmentTextView_description">Skjermbilde for endring av avtale</string>
+    <string name="contactTextView_text">Kontakt</string>
+    <string name="dateTextView_text">Dato</string>
+    <string name="timeTextView_text">Tid</string>
+    <string name="contactEditText_description">Endre avtalt kontakt</string>
+    <string name="dateEditText_description">Endre dato på avtale</string>
+    <string name="timeEditText_description">Endre tid på avtale</string>
 
 </resources>

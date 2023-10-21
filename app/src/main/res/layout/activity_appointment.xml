@@ -6,4 +6,125 @@
     android:layout_height="match_parent"
     tools:context=".AppointmentActivity">
 
+    <TextView
+        android:id="@+id/AppointmentHeader"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+        android:text="@string/appointmentTextView_text"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:contentDescription="@string/appointmentTextView_description"
+        tools:contentDescription="@string/appointmentTextView_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/deleteAppointment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/deleteItemBtn_description"
+        android:onClick="newContactMethod"
+        android:text="@string/deleteItemBtn_text"
+        app:icon="@android:drawable/ic_delete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:contentDescription="@string/deleteItemBtn_description" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/applyChanges"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:layout_marginEnd="104dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/newAppointmentBtn_description"
+        android:onClick="newContactMethod"
+        android:text="@string/applyChangesBtn_text"
+        app:icon="@android:drawable/ic_menu_edit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:contentDescription="@string/newAppointmentBtn_description" />
+
+    <TableLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="55dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="59dp"
+        android:stretchColumns="0,1"
+        app:layout_constraintBottom_toTopOf="@+id/deleteAppointment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/AppointmentHeader">
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="183dp"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/contactTextView"
+                android:layout_column="0"
+                android:text="@string/contactTextView_text"
+                android:textSize="24sp" />
+
+            <Spinner
+                android:id="@+id/contactSpinner"
+                android:layout_column="1" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/dateTextView"
+                android:layout_column="0"
+                android:text="@string/dateTextView_text"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/dateEditText"
+                android:layout_column="1"
+                android:ems="10"
+                android:inputType="datetime|date" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/timeTextView"
+                android:layout_column="0"
+                android:text="@string/timeTextView_text"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/timeEditText"
+                android:layout_column="1"
+                android:ems="10"
+                android:inputType="datetime|time" />
+
+        </TableRow>
+    </TableLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
