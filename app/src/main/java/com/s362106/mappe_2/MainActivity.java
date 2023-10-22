@@ -46,9 +46,25 @@ public class MainActivity extends AppCompatActivity {
                 Appointment selectedAppointment = (Appointment) parent.getItemAtPosition(position);
                 Toast.makeText(MainActivity.this, "Clicked on: " + selectedAppointment, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, AppointmentActivity.class);
-                intent.putExtra("item_position", position);
+                intent.putExtra("uid", selectedAppointment.getUid());
                 startActivity(intent);
             }
+        });
+    }
+
+    public void newAppointmentMethod(View view) {
+        final String date = "2014";
+        final String time = "10:50";
+
+        Appointment newA = new Appointment();
+        newA.setDate(date);
+        newA.setTime(time);
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().appointmentDao().newAppointment(newA);
         });
     }
 

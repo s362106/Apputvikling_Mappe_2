@@ -12,11 +12,10 @@ import java.util.List;
 public interface AppointmentDao {
     @Query("SELECT * FROM Appointment")
     List<Appointment> getAll();
-
-    @Query("SELECT * FROM Appointment LIMIT 1 OFFSET :position")
-    Appointment getEntityByPosition(int position);
+    @Query("SELECT * FROM Appointment WHERE AppointmentId = :uid")
+    Appointment getObjectByUID(String uid);
     @Insert
-    void insert(Appointment appointment);
+    void newAppointment(Appointment appointment);
     @Delete
     void delete(Appointment appointment);
     @Update

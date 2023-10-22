@@ -42,4 +42,10 @@ public class Appointment {
         this.time = time;
     }
 
+    @Override
+    public String toString() {
+        String ut = "ID: " + getUid() + "\nDate: " + getDate();
+        ut += "\nLast Name: " + getTime();
+        return ut;
+    }
 }

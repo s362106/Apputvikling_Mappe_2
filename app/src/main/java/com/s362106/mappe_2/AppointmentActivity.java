@@ -1,6 +1,7 @@
 package com.s362106.mappe_2;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Database;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,12 +29,9 @@ public class AppointmentActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 
-        /*
-        AppointmentDao dao = database.AppointmentDao();
-        Appointment objectToUpdate = dao.getEntityByPosition(position);
 
 
-        */
+
     }
     /*
     public void getAllContacts(View view) {
