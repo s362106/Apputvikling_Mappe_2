@@ -179,10 +179,6 @@ public class ContactsActivity extends AppCompatActivity {
         });
     }
 
-    private boolean isEmpty(EditText editText) {
-        return editText.getText().toString().trim().isEmpty();
-    }
-
     public void UpdateContact(Contact contact) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
