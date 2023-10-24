@@ -10,7 +10,7 @@ public class Appointment {
     @PrimaryKey(autoGenerate = true)
     public int appointmentId;
 
-    // Her skal det legges til foreign-key som er "Contact"
+    @ForeignKey(Contact contact)
 
     @ColumnInfo(name = "date")
     public String date;

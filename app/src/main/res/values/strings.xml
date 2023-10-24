@@ -50,5 +50,9 @@
     <string name="custom_dialog_hint_lastName">Last Name</string>
     <string name="custom_dialog_hint_phoneNumber">12345678</string>
 
+    <!-- appointment_dialog_layout -->
+    <string name="custom_dialog_hint_contact">Select Contact</string>
+    <string name="custom_dialog_desc_date"></string>
+    <string name="custom_dialog_desc_time"></string>
 
 </resources>
