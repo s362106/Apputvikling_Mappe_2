@@ -12,7 +12,7 @@ public class DatabaseClient {
 
     private DatabaseClient(Context mCTx) {
         this.mCTx = mCTx;
-        appDatabase = Room.databaseBuilder(mCTx, AppDatabase.class, "MyContacts").build();
+        appDatabase = Room.databaseBuilder(mCTx, AppDatabase.class, "MyAppData").build();
     }
 
     public static synchronized DatabaseClient getInstance(Context mCTx) {

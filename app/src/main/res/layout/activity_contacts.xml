@@ -57,7 +57,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
         android:contentDescription="@string/newAppointmentBtn_description"
-        android:onClick="newContactMethod"
+        android:onClick="showNewContactDialog"
         android:text="@string/newContactBtn_text"
         app:icon="@drawable/round_add_24"
         app:layout_constraintBottom_toBottomOf="parent"

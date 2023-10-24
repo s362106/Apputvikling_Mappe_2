@@ -34,4 +34,21 @@
     <string name="dateEditText_description">Endre dato på avtale</string>
     <string name="timeEditText_description">Endre tid på avtale</string>
 
+
+    <!-- ContactsActivity -->
+
+    <string name="newContactTitle">Ny kontakt</string>
+    <string name="newContactPositiveButtonText">Legg til</string>
+    <string name="newContactNegativeButtonText">Avbryt</string>
+
+    <string name="contactdetailsTitle">Oppdater Kontakt Informasjon</string>
+    <string name="contactDetailsUpdateText">Oppdater</string>
+    <string name="contactdetailsDeleteText">Slett Kontakt</string>
+    <string name="contactDetailsCancelText">Avbryt</string>
+
+    <string name="custom_dialog_hint_firstName">First Name</string>
+    <string name="custom_dialog_hint_lastName">Last Name</string>
+    <string name="custom_dialog_hint_phoneNumber">12345678</string>
+
+
 </resources>
