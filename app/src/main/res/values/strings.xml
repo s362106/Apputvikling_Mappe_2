@@ -52,7 +52,10 @@
 
     <!-- appointment_dialog_layout -->
     <string name="custom_dialog_hint_contact">Select Contact</string>
-    <string name="custom_dialog_desc_date"></string>
-    <string name="custom_dialog_desc_time"></string>
-
+    <string name="custom_dialog_desc_date">Endre dato på Avtalen</string>
+    <string name="custom_dialog_desc_time">Endre tid på Avtalen</string>
+    <string name="appointmentDetailsTitle">Oppdater Avtale Informasjon</string>
+    <string name="appointmentDetailsUpdateText">Oppdater</string>
+    <string name="appointmentDetailsDeleteText">Slett Avtale</string>
+    <string name="appointmentDetailsCancelText">Avbryt</string>
 </resources>

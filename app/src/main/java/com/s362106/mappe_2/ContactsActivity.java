@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -168,6 +169,7 @@ public class ContactsActivity extends AppCompatActivity {
                     contact.setLastName(lastName_edittext.getText().toString().trim());
                     contact.setPhoneNumber(phoneNumber_edittext.getText().toString().trim());
                     UpdateContact(contact);
+
                     alert.dismiss();
                 }
                 else {

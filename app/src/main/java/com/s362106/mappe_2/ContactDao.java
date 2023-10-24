@@ -24,4 +24,7 @@ public interface ContactDao {
 
     @Query("SELECT * FROM Contact WHERE ContactId=:contactId")
     Contact getContact(final int contactId);
+
+    @Query("SELECT COUNT(*) FROM contact WHERE ContactId <= :contactId")
+    int getPositionByContactId(int contactId);
 }

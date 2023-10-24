@@ -1,22 +1,30 @@
 package com.s362106.mappe_2;
 
+import android.widget.DatePicker;
+import android.widget.TimePicker;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+@Entity(foreignKeys = @ForeignKey(entity = Contact.class, parentColumns = "ContactId", childColumns = "ContactId", onDelete = ForeignKey.CASCADE))
 public class Appointment {
     @PrimaryKey(autoGenerate = true)
     public int appointmentId;
 
-    @ForeignKey(Contact contact)
-
     @ColumnInfo(name = "date")
-    public String date;
+    public static String date;
 
     @ColumnInfo(name = "time")
-    public String time;
+    public static String time;
+
+    private static int ContactId;
 
     public int getUid() {
         return appointmentId;
@@ -26,20 +34,82 @@ public class Appointment {
         this.appointmentId = id;
     }
 
-    public String getDate() {
-        return date;
+    public int getContactId() {
+        return ContactId;
     }
 
-    public void setDate(String date) {
+    public static void setContactId(int id) {
+        ContactId = id;
+    }
+
+    public int[] getDate() {
+        int[] dayMonthYear = new int[3];
+
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            Date parsedDate = dateFormat.parse(date);
+
+            if (parsedDate != null) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(parsedDate);
+                dayMonthYear[0] = calendar.get(Calendar.DAY_OF_MONTH);
+                dayMonthYear[1] = calendar.get(Calendar.MONTH) + 1;
+                dayMonthYear[2] = calendar.get(Calendar.YEAR);
+
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dayMonthYear;
+    }
+
+    public static void setDate(DatePicker datePicker) {
+        int day = datePicker.getDayOfMonth();
+        int month = datePicker.getMonth();
+        int year = datePicker.getYear();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(day, month, year);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String stringDate = dateFormat.format(calendar.getTime());
+        date = stringDate;
+    }
+
+    public void setDateString(String date) {
         this.date = date;
     }
 
-    public String getTime() {
-        return time;
+    public void setTimeString(String time) {
+        this.time = time;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public int[] getTime() {
+        int[] hourMinute = new int[2];
+
+        try {
+             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+             Date parsedTime = timeFormat.parse(time);
+
+             if (parsedTime != null) {
+                 Calendar calendar = Calendar.getInstance();
+                 calendar.setTime(parsedTime);
+                 hourMinute[0] = calendar.get(Calendar.HOUR_OF_DAY);
+                 hourMinute[1] = calendar.get(Calendar.MINUTE);
+             }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return hourMinute;
+    }
+
+    public static void setTime(TimePicker timePicker) {
+        int hour = timePicker.getHour();
+        int minute = timePicker.getMinute();
+
+        String formattedTime = String.format("%02d:%02d", hour, minute);
+        time = formattedTime;
     }
 
     @Override
