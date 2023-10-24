@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class Contact {
+
     @PrimaryKey(autoGenerate = true)
     public int ContactId;
     @ColumnInfo(name = "first_name")

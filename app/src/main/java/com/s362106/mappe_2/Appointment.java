@@ -13,18 +13,19 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-@Entity(foreignKeys = @ForeignKey(entity = Contact.class, parentColumns = "ContactId", childColumns = "ContactId", onDelete = ForeignKey.CASCADE))
+@Entity(foreignKeys = @ForeignKey(entity = Contact.class, parentColumns = "ContactId", childColumns = "contactId", onDelete = ForeignKey.CASCADE))
 public class Appointment {
     @PrimaryKey(autoGenerate = true)
     public int appointmentId;
 
     @ColumnInfo(name = "date")
-    public static String date;
+    public String date;
 
     @ColumnInfo(name = "time")
-    public static String time;
+    public String time;
 
-    private static int ContactId;
+    @ColumnInfo(name = "contactId")
+    private int ContactId;
 
     public int getUid() {
         return appointmentId;
@@ -38,8 +39,8 @@ public class Appointment {
         return ContactId;
     }
 
-    public static void setContactId(int id) {
-        ContactId = id;
+    public void setContactId(int id) {
+        this.ContactId = id;
     }
 
     public int[] getDate() {
@@ -64,7 +65,7 @@ public class Appointment {
         return dayMonthYear;
     }
 
-    public static void setDate(DatePicker datePicker) {
+    public void setDate(DatePicker datePicker) {
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth();
         int year = datePicker.getYear();
@@ -74,7 +75,7 @@ public class Appointment {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String stringDate = dateFormat.format(calendar.getTime());
-        date = stringDate;
+        this.date = stringDate;
     }
 
     public void setDateString(String date) {
@@ -104,12 +105,12 @@ public class Appointment {
         return hourMinute;
     }
 
-    public static void setTime(TimePicker timePicker) {
+    public void setTime(TimePicker timePicker) {
         int hour = timePicker.getHour();
         int minute = timePicker.getMinute();
 
         String formattedTime = String.format("%02d:%02d", hour, minute);
-        time = formattedTime;
+        this.time = formattedTime;
     }
 
     @Override

@@ -28,6 +28,10 @@ import java.util.concurrent.Executors;
 public class MainActivity extends AppCompatActivity {
 
     private ListView appointmentListView;
+
+    private Spinner contact_spinner;
+    private DatePicker date_datePicker;
+    private TimePicker time_timePicker;
     private ArrayAdapter<Appointment> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,20 +68,59 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void newAppointmentMethod(View view) {
-        final String date = "12-10-2014";
-        final String time = "10:50";
+    private void newAppointmentMethod(View customLayout, AlertDialog.Builder alertBuilder, Spinner contact_spinner,
+                                      DatePicker date_datePicker, TimePicker time_timePicker) {
+        alertBuilder.setTitle(R.string.newAppointmentTitle)
+                .setPositiveButton(R.string.newContactPositiveButtonText, ((dialog, which) -> {
 
-        Appointment newA = new Appointment();
-        newA.setDateString(date);
-        newA.setTimeString(time);
+                }))
+                .setNegativeButton(R.string.newContactNegativeButtonText, ((dialog, which) -> dialog.dismiss()))
+                .setView(customLayout);
 
+        AlertDialog dialog = alertBuilder.create();
+        dialog.show();
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(validateFields(contact_spinner, date_datePicker, time_timePicker)) {
+                    Appointment newAppointment = new Appointment();
+                    Contact selectedContact = (Contact) contact_spinner.getSelectedItem();
+                    newAppointment.setContactId(selectedContact.getContactId());
+                    newAppointment.setDate(date_datePicker);
+                    newAppointment.setTime(time_timePicker);
+
+                    createNewAppointment(newAppointment);
+                    updateListView();
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(MainActivity.this, "Fyll ut alle felt", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public void createNewAppointment(Appointment appointment) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
         executor.execute(() -> {
-            DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().appointmentDao().newAppointment(newA);
+            DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().appointmentDao().newAppointment(appointment);
+
+            handler.post(() -> {
+                updateListView();
+            });
         });
+    }
+
+    private boolean validateFields(Spinner spinner, DatePicker date, TimePicker time) {
+        if (spinner.getSelectedItemPosition() != -1
+                && date.getYear() != 0 && date.getMonth() != 0 && date.getDayOfMonth() != 0
+                && time.getHour() != 0 && time.getMinute() != 0 ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void showAppointmentDetailsDialog(Appointment appointment) {
@@ -136,15 +179,13 @@ public class MainActivity extends AppCompatActivity {
         alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(contact_spinner.getSelectedItemPosition() != -1
-                        && date_datepicker.getYear() != 0 && date_datepicker.getMonth() != 0 && date_datepicker.getDayOfMonth() != 0
-                        && time_timepicker.getHour() != 0 && time_timepicker.getMinute() != 0 ){
+                if(validateFields(contact_spinner, date_datepicker, time_timepicker)){
 
                     Contact selectedContact = (Contact) contact_spinner.getSelectedItem();
-                    Appointment.setContactId(selectedContact.getContactId());
+                    appointment.setContactId(selectedContact.getContactId());
 
-                    Appointment.setDate(date_datepicker);
-                    Appointment.setTime(time_timepicker);
+                    appointment.setDate(date_datepicker);
+                    appointment.setTime(time_timepicker);
                     UpdateAppointment(appointment);
                     alert.dismiss();
                 }

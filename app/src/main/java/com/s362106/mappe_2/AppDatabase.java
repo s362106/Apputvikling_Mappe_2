@@ -2,6 +2,7 @@ package com.s362106.mappe_2;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
+import androidx.room.ForeignKey;
 
 @Database(entities = {Contact.class, Appointment.class}, version = 1)
 
