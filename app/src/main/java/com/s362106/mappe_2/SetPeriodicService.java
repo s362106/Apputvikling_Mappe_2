@@ -6,10 +6,12 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.telephony.SmsManager;
 
 import androidx.annotation.Nullable;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class SetPeriodicService extends Service {
 
@@ -22,10 +24,13 @@ public class SetPeriodicService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, intent.getIntExtra("HOUR_OF_DAY", 7));
+        cal.set(Calendar.MINUTE, intent.getIntExtra("MINUTE", 7));
         Intent i = new Intent(this, SMSService.class);
         PendingIntent pendingIntent = PendingIntent.getService(this, 0, i, PendingIntent.FLAG_IMMUTABLE);
-        AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 60 * 1000, pendingIntent);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
 
         return super.onStartCommand(intent, flags, startId);
     }
