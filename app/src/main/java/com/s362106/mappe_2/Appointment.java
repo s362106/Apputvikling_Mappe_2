@@ -8,6 +8,7 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -43,6 +44,9 @@ public class Appointment {
         this.ContactId = id;
     }
 
+    public String getDateString() {
+        return date;
+    }
     public int[] getDate() {
         int[] dayMonthYear = new int[3];
 
@@ -70,12 +74,7 @@ public class Appointment {
         int month = datePicker.getMonth();
         int year = datePicker.getYear();
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(day, month, year);
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        String stringDate = dateFormat.format(calendar.getTime());
-        this.date = stringDate;
+        this.date = day +"-"+month+"-"+year;
     }
 
     public void setDateString(String date) {
@@ -86,6 +85,9 @@ public class Appointment {
         this.time = time;
     }
 
+    public String getTimeString() {
+        return time;
+    }
     public int[] getTime() {
         int[] hourMinute = new int[2];
 
@@ -115,8 +117,8 @@ public class Appointment {
 
     @Override
     public String toString() {
-        String ut = "ID: " + getUid() + "\nDate: " + getDate();
-        ut += "\nLast Name: " + getTime();
+        String ut = "ID: " + getUid() + "\nKontakt: " + ContactId + "\nDato: " + getDateString();
+        ut += "\nTid: " + getTimeString();
         return ut;
     }
 }

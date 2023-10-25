@@ -24,12 +24,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="54dp"
+        android:layout_marginTop="22dp"
         android:layout_marginEnd="16dp"
         android:contentDescription="@string/custom_dialog_desc_date"
         android:datePickerMode="spinner"
+        android:calendarViewShown="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialog_spinner" />
 
@@ -43,8 +44,11 @@
         android:layout_marginBottom="87dp"
         android:contentDescription="@string/custom_dialog_desc_time"
         android:timePickerMode="spinner"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_datePicker" />
+        app:layout_constraintTop_toBottomOf="@+id/dialog_datePicker"
+        app:layout_constraintVertical_bias="0.127" />
 </androidx.constraintlayout.widget.ConstraintLayout>
