@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         serviceToastMessage = resources.getString(R.string.sms_service_toast_message);
         permissionToastMessage = resources.getString(R.string.sms_permission_message);
-
+        timeFormatToastMessage = resources.getString(R.string.invalid_format_message);
 
         appointmentListView = findViewById(R.id.appointmentListView);
         setupListView();
@@ -77,28 +77,15 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter(customSignal);
         filter.addAction(customSignal);
         this.registerReceiver(smsBroadcastReceiver, filter);
+        sendBroadcast();
+        createNotificationChannel();
+        Toast.makeText(this, serviceToastMessage, Toast.LENGTH_SHORT).show();
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS},
                     SEND_SMS_PERMISSION_REQUEST_CODE);
         }
-
-        if (isSmsEnabled) {
-            sendBroadcast();
-            createNotificationChannel();
-            Toast.makeText(this, serviceToastMessage, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void sendBroadcast(View view) {
-        Intent intent = new Intent();
-        intent.setAction(customSignal);
-        sendBroadcast(intent);
-    }
-    private boolean validateTime(String inputTime) {
-        String timeRegex = "([01]?[0-9]|2[0-3]):[0-5][0-9]";
-        return inputTime.matches(timeRegex);
     }
 
     public void preferenceMethod(View view) {
@@ -114,12 +101,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        isSmsEnabled = preferences.getBoolean(smsServiceKey, false);
-        if (isSmsEnabled) {
-            createNotificationChannel();
-            sendBroadcast();
-        }
+        sendBroadcast();
     }
 
     @Override
@@ -150,35 +132,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setAction(customSignal);
         sendBroadcast(intent);
-    }
-
-
-    private void setPeriodic() {
-        String timeString = preferences.getString(timePreferenceKey, "").trim();
-        if (validateTime(timeString)) {
-            Intent intent = new Intent(this, SetPeriodicService.class);
-            String[] parts = timeString.split(":");
-
-            int hour = Integer.parseInt(parts[0]);
-            int minute = Integer.parseInt(parts[1]);
-            intent.putExtra(intentHourExtra, hour);
-            intent.putExtra(intentMinuteExtra, minute);
-            this.startService(intent);
-        }
-        else {
-            Toast.makeText(this, timeFormatToastMessage, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void stopPeriodicService() {
-        Intent i = new Intent(this, SMSService.class);
-
-        PendingIntent pendingIntent = PendingIntent.getService(this, 0, i, PendingIntent.FLAG_IMMUTABLE);
-
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        if (alarmManager != null) {
-            alarmManager.cancel(pendingIntent);
-        }
     }
 
     private void setupListView() {
