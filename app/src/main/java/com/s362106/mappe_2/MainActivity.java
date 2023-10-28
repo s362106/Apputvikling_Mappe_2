@@ -5,20 +5,21 @@ import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
@@ -40,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int SEND_SMS_PERMISSION_REQUEST_CODE = 1;
     private ListView appointmentListView;
+    private Resources resources;
+    private String smsServiceKey, timePreferenceKey, serviceToastMessage, permissionToastMessage,
+            timeFormatToastMessage, validateFieldsToastMessage, notificationDescription;
+    private final String intentHourExtra = "HOUR_OF_DAY", intentMinuteExtra = "MINUTE",
+            intentContactId = "contactId", CHANNEL_ID = "MyChannel",  customSignal = "OurSignal";
     private Spinner contact_spinner;
     private DatePicker date_datePicker;
     private TimePicker time_timePicker;
@@ -53,12 +59,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        resources = getResources();
+        smsServiceKey = resources.getString(R.string.sms_service_preference_key);
+        timePreferenceKey = resources.getString(R.string.time_preference_key);
+        validateFieldsToastMessage = resources.getString(R.string.empty_fields_toast);
+
+        serviceToastMessage = resources.getString(R.string.sms_service_toast_message);
+        permissionToastMessage = resources.getString(R.string.sms_permission_message);
+
 
         appointmentListView = findViewById(R.id.appointmentListView);
         setupListView();
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        isSmsEnabled = preferences.getBoolean("sms-service", false);
+        isSmsEnabled = preferences.getBoolean(smsServiceKey, false);
+        BroadcastReceiver smsBroadcastReceiver = new SMSBroadcastReceiver();
+        IntentFilter filter = new IntentFilter(customSignal);
+        filter.addAction(customSignal);
+        this.registerReceiver(smsBroadcastReceiver, filter);
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
@@ -67,21 +85,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (isSmsEnabled) {
-            Appointment appointment = new Appointment();
-            appointment.setContactId(1);
-            DatePicker datePicker = new DatePicker(getApplicationContext());
-            Log.d("Dte", "Date: " + datePicker.getDayOfMonth() + "-" + datePicker.getMonth() + "-" + datePicker.getYear());
-            appointment.setDate(datePicker);
-            TimePicker tp = new TimePicker(getApplicationContext());
-            tp.setHour(12);
-            tp.setMinute(29);
-            appointment.setTime(tp);
-
-            //createNewAppointment(appointment);
-            //createNotificationChannel();
-            Toast.makeText(this, "SMS-SERVICE IS ENABLED", Toast.LENGTH_SHORT).show();
-
+            sendBroadcast();
+            createNotificationChannel();
+            Toast.makeText(this, serviceToastMessage, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void sendBroadcast(View view) {
+        Intent intent = new Intent();
+        intent.setAction(customSignal);
+        sendBroadcast(intent);
+    }
+    private boolean validateTime(String inputTime) {
+        String timeRegex = "([01]?[0-9]|2[0-3]):[0-5][0-9]";
+        return inputTime.matches(timeRegex);
     }
 
     public void preferenceMethod(View view) {
@@ -97,11 +114,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        isSmsEnabled = preferences.getBoolean("sms-service", false);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        isSmsEnabled = preferences.getBoolean(smsServiceKey, false);
         if (isSmsEnabled) {
-            setPeriodic();
-        } else {
-            stopPeriodicService();
+            createNotificationChannel();
+            sendBroadcast();
         }
     }
 
@@ -113,29 +130,44 @@ public class MainActivity extends AppCompatActivity {
                     PackageManager.PERMISSION_GRANTED) {
 
             } else {
-                Toast.makeText(this, "SMS tillatelse ikke gitt. Du kan ikke sende SMS.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, permissionToastMessage, Toast.LENGTH_SHORT).show();
                 isSmsEnabled = false;
             }
         }
     }
 
     private void createNotificationChannel() {
-        CharSequence name = "MyChannel";
-        String description = "Min egen notifikasjon";
+        CharSequence name = resources.getString(R.string.notification_channel_name);
+        String description = resources.getString(R.string.notification_channel_description);
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
-        NotificationChannel channel = new NotificationChannel("MyChannel", name, importance);
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
         channel.setDescription(description);
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
         notificationManager.createNotificationChannel(channel);
     }
 
+    private void sendBroadcast() {
+        Intent intent = new Intent();
+        intent.setAction(customSignal);
+        sendBroadcast(intent);
+    }
+
+
     private void setPeriodic() {
-        Intent intent = new Intent(this, SetPeriodicService.class);
-        int hour = 21;
-        int min = 31;
-        intent.putExtra("HOUR_OF_DAY", hour);
-        intent.putExtra("MINUTE", min);
-        this.startService(intent);
+        String timeString = preferences.getString(timePreferenceKey, "").trim();
+        if (validateTime(timeString)) {
+            Intent intent = new Intent(this, SetPeriodicService.class);
+            String[] parts = timeString.split(":");
+
+            int hour = Integer.parseInt(parts[0]);
+            int minute = Integer.parseInt(parts[1]);
+            intent.putExtra(intentHourExtra, hour);
+            intent.putExtra(intentMinuteExtra, minute);
+            this.startService(intent);
+        }
+        else {
+            Toast.makeText(this, timeFormatToastMessage, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void stopPeriodicService() {
@@ -149,50 +181,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    private void scheduleRemindersForAppointments() {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
-
-        executor.execute(() -> {
-            List<Appointment> appointmentList = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().appointmentDao().getAll();
-
-            for (Appointment appointment : appointmentList) {
-                long appointmentTimeMillis = calculateAppointmentTime(appointment);
-
-                Intent intent = new Intent(this, SMSService.class);
-                intent.putExtra("contactId", appointment.getContactId());
-
-                PendingIntent pendingIntent = PendingIntent.getService(this, (int) appointmentTimeMillis, intent, PendingIntent.FLAG_IMMUTABLE);
-
-                AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                manager.set(AlarmManager.RTC, appointmentTimeMillis, pendingIntent);
-            }
-        });
-    }
-
-    private long calculateAppointmentTime(Appointment appointment) {
-        int[] appointmentDate = appointment.getDate();
-
-        int year = appointmentDate[2];
-        int month = appointmentDate[1];
-        int day = appointmentDate[0];
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day, 7, 0);
-
-        long reminderTimeMillis = calendar.getTimeInMillis();
-
-        return reminderTimeMillis;
-    }
-
     private void setupListView() {
         updateListView();
 
         appointmentListView.setOnItemClickListener((parent, view, position, id) -> {
             Appointment selectedObject = (Appointment) parent.getItemAtPosition(position);
             showAppointmentDetailsDialog(selectedObject);
-            Toast.makeText(MainActivity.this, "Clicked on: " + selectedObject, Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Klikket på: " + selectedObject, Toast.LENGTH_SHORT).show();
 
         });
     }
@@ -264,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, " "+ date_datepicker.getDayOfMonth(), Toast.LENGTH_SHORT).show();
                     alert.dismiss();
                 } else {
-                    Toast.makeText(MainActivity.this, "Alle felt må bli fylt ut!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, validateFieldsToastMessage, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -310,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
                     updateListView();
                     dialog.dismiss();
                 } else {
-                    Toast.makeText(MainActivity.this, "Fyll ut alle felt", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, validateFieldsToastMessage, Toast.LENGTH_SHORT).show();
                 }
             }
         });

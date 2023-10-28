@@ -2,18 +2,26 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:title="General Settings">
+    <PreferenceCategory android:title="@string/preference_category_title">
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="sms-service"
-        android:title="Slå på sms-tjeneste" />
+        <SwitchPreference
+            android:defaultValue="@string/sms_service_default_value"
+            android:key="@string/sms_service_preference_key"
+            android:summary="@string/sms_service_summary"
+            android:title="@string/sms_service_title" />
 
-    <EditTextPreference
-        android:key="sms-message"
-        android:defaultValue="Hei"
-        android:title="Default SMS-message to be sent"/>
+        <EditTextPreference
+            android:defaultValue="@string/time_preference_default_value"
+            android:key="@string/time_preference_key"
+            android:summary="@string/time_preference_summary"
+            android:title="@string/time_preference_title" />
+
+        <EditTextPreference
+            android:defaultValue="@string/sms_message_default"
+            android:key="@string/sms_message_preference_key"
+            android:title="@string/sms_message_title"
+            android:summary="@string/sms_message_summary"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

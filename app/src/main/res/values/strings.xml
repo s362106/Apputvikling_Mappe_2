@@ -11,6 +11,12 @@
     <string name="preferenceBtn_text">Preferanser</string>
     <string name="preferenceBtn_description">Knapp for preferanser</string>
 
+    <string name="sms_permission_message">SMS tillatelse ikke gitt. Du kan ikke sende sms</string>
+    <string name="empty_fields_toast">Alle felt må bli fylt ut!</string>
+
+    <string name="notification_channel_name">MyChannel</string>
+    <string name="notification_channel_description">Min egendefinerte varslingskanal</string>
+
     <!-- ContactsActivity -->
     <string name="contactsTextView_text">Dine Kontakter</string>
     <string name="contactsTextView_description">Skjermbilde av kontakter</string>
@@ -43,7 +49,7 @@
 
     <string name="contactdetailsTitle">Oppdater Kontakt Informasjon</string>
     <string name="contactDetailsUpdateText">Oppdater</string>
-    <string name="contactdetailsDeleteText">Slett Kontakt</string>
+    <string name="contactdetailsDeleteText">Slett</string>
     <string name="contactDetailsCancelText">Avbryt</string>
 
     <string name="custom_dialog_hint_firstName">First Name</string>
@@ -59,4 +65,26 @@
     <string name="appointmentDetailsDeleteText">Slett Avtale</string>
     <string name="appointmentDetailsCancelText">Avbryt</string>
     <string name="newAppointmentTitle">Ny avtale</string>
+
+    <!-- Preference values -->
+    <string name="preference_category_title">Generelle innstillinger</string>
+
+    <string name="sms_service_preference_key">sms-service</string>
+    <string name="sms_service_title">Slå på SMS påminnelse</string>
+    <string name="sms_service_default_value">false</string>
+    <string name="sms_service_toast_message">SMS påminnelse aktivert</string>
+    <string name="sms_service_summary">Send sms-påminnelse til venner</string>
+
+    <string name="time_preference_key">time_preference</string>
+    <string name="time_preference_default_value">06:00</string>
+    <string name="time_preference_summary">Format: hh:mm</string>
+    <string name="time_preference_title">Klokkeslett</string>
+    <string name="invalid_format_message">Ugyldig tidsformat!</string>
+
+    <string name="sms_message_preference_key">sms-message</string>
+    <string name="sms_message_default">Hei! Ville bare påminne deg at vi har en avtale i dag.</string>
+    <string name="sms_message_title">SMS-melding</string>
+    <string name="sms_message_summary">Skriv inn hvilke melding som skal bli sent</string>
+
+
 </resources>
