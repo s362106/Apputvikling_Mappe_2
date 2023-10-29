@@ -17,7 +17,6 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
     private Resources resources;
 
     public SMSBroadcastReceiver() {}
-
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("SMSBroadcastReceiver", "Received broadcast");
@@ -31,19 +30,27 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
             String timeString = preferences.getString(timePreferenceKey, "").trim();
 
             if (validateTime(timeString)) {
-                Intent i = new Intent(context, SetPeriodicService.class);
-                String[] parts = timeString.split(":");
+                if (!isServiceScheduled(context)) {
+                    Intent i = new Intent(context, SetPeriodicService.class);
+                    String[] parts = timeString.split(":");
 
-                int hour = Integer.parseInt(parts[0]);
-                int minute = Integer.parseInt(parts[1]);
-                intent.putExtra(intentHourExtra, hour);
-                intent.putExtra(intentMinuteExtra, minute);
-                context.startService(i);
+                    int hour = Integer.parseInt(parts[0]);
+                    int minute = Integer.parseInt(parts[1]);
+                    intent.putExtra(intentHourExtra, hour);
+                    intent.putExtra(intentMinuteExtra, minute);
+                    context.startService(i);
+                }
             }
         } else {
             // SMS service is not enabled
             stopSetPeriodicService(context);
         }
+    }
+
+    private boolean isServiceScheduled(Context context) {
+        Intent i = new Intent(context, SetPeriodicService.class);
+        PendingIntent pendingIntent = PendingIntent.getService(context, 0, i, PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE);
+        return pendingIntent != null;
     }
 
     private boolean validateTime(String inputTime) {

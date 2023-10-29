@@ -45,13 +45,6 @@ public class SMSService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.d("CustomService", "Service Made");
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        resources = getResources();
-        String hourMinute = preferences.getString(resources.getString(R.string.time_preference_key), "06:00");
-        String[] parts = hourMinute.split(":");
-
-        hour = Integer.parseInt(parts[0]);
-        minute = Integer.parseInt(parts[1]);
     }
 
     @Override
@@ -122,7 +115,7 @@ public class SMSService extends Service {
                     smsManager.sendTextMessage(retreivedContact.getPhoneNumber(), null, smsContent, null, null);
                     mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                     // Create a notification to inform the user
-                    Intent i = new Intent(this, SetPeriodicService.class);
+                    Intent i = new Intent(this, MainActivity.class);
                     i.putExtra(intentHourExtra, hour);
                     i.putExtra(intentMinuteExtra, minute);
                     PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -132,6 +125,7 @@ public class SMSService extends Service {
                             .setContentText("SMS sendt til " + retreivedContact.getFirstName())
                             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                             .setContentIntent(pendingIntent).build();
+
                     notification.flags |= Notification.FLAG_AUTO_CANCEL;
                     mNM.notify(88, notification);
                     Log.d("sendSMSForAppointment", "sendSMSForAppointment Melding sent til kontakt: " + retreivedContact.getFirstName());
