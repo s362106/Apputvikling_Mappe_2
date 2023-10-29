@@ -2,7 +2,7 @@
     <string name="app_name">Mappe_2</string>
 
     <!-- MainActivity -->
-    <string name="friendsBtn_text">Friend List</string>
+    <string name="friendsBtn_text">Venn Liste</string>
     <string name="friendsBtn_description">Knapp for venne liste</string>
 
     <string name="newAppointmentBtn_text">Ny Avtale</string>

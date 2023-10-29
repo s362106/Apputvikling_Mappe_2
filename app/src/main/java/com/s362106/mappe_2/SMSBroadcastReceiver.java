@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.util.Log;
 
 import androidx.preference.PreferenceManager;
 
@@ -19,7 +18,6 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
     public SMSBroadcastReceiver() {}
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("SMSBroadcastReceiver", "Received broadcast");
         resources = context.getResources();
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String timePreferenceKey = resources.getString(R.string.time_preference_key);

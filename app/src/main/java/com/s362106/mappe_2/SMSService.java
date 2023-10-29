@@ -44,13 +44,11 @@ public class SMSService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("CustomService", "Service Made");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         checkAppointments();
-        Log.d("Service", "Startet Service");
         resources = getResources();
         smsContent = resources.getString(R.string.sms_message_default);
         return START_NOT_STICKY;
@@ -59,7 +57,6 @@ public class SMSService extends Service {
     private void checkAppointments() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-        Log.d("checkAppointments", "I checkAppointments");
         executor.execute(() -> {
             Message message = new Message();
 
@@ -67,8 +64,6 @@ public class SMSService extends Service {
                     .getAppDatabase()
                     .appointmentDao()
                     .getAll();
-
-            Log.d("checkAppointments", "checkAppointments execute er ferdig");
 
             handler.post(() -> {
                 List<Appointment> receivedlist = (List<Appointment>) message.obj;
@@ -78,16 +73,11 @@ public class SMSService extends Service {
                         Calendar now = Calendar.getInstance();
                         if(isAppointmentToday(appointment, now)){
                             sendSMSForAppointment(appointment);
-                            Log.d("checkAppointments", "Message sent for " + String.valueOf(appointment.getUid()));
                         } else if (isAppointmentOld(appointment, now)) {
                             deleteOldAppointmet(appointment);
                         }
                     }
                 }
-                else {
-                    Log.d("checkAppointments", "receivedList er tom");
-                }
-                Log.d("checkAppointments", "checkAppointments post er ferdig");
             });
         });
     }
@@ -106,7 +96,6 @@ public class SMSService extends Service {
                     .contactDao()
                     .getContact(contactId);
 
-            Log.d("sendSMSForAppointment", "sendSMSForAppointment Ferdig i execute");
             handler.post(() -> {
                 Contact retreivedContact = (Contact) dbContact.obj;
 
@@ -128,10 +117,6 @@ public class SMSService extends Service {
 
                     notification.flags |= Notification.FLAG_AUTO_CANCEL;
                     mNM.notify(88, notification);
-                    Log.d("sendSMSForAppointment", "sendSMSForAppointment Melding sent til kontakt: " + retreivedContact.getFirstName());
-                }
-                else {
-                    Log.d("sendSMSForAppointment", "sendSMSForAppointment fått tilbake null kontakt");
                 }
             });
         });
@@ -146,7 +131,6 @@ public class SMSService extends Service {
 
 
             handler.post(() -> {
-                Log.d("deleteOldAppointment", "Slettet gammel avtale");
             });
         });
     }
